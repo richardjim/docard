@@ -3,7 +3,14 @@ const db = require("../model");
 const cards = db.cards;
 const Comment = db.comment;
 
-
+// router.get('/', (req, res) =>
+//   Gig.findAll()
+//     .then(gigs => {
+//         console.log(gigs);
+//       res.sendStatus(200);
+//     })
+//     .catch((err) => console.log(err))
+// );
 
 exports.create = (req,res) =>{
   if(!req.body.title) {
@@ -11,7 +18,7 @@ exports.create = (req,res) =>{
       message:"content can not be empty"
     });
     return;
-  }
+  };
 
 
 // Create and Save new cards
@@ -76,3 +83,60 @@ exports.findAll = () => {
       console.log(err);
     });
 };
+
+ 
+
+exports.deleteComment = (cards) => {
+  return Cards.delete({
+    title: cards.title
+  })
+    .then((cards) => {
+      console.log(">> delete card: " + JSON.stringify(cards, null, 4));
+      return cards;
+    })
+    .catch((err) => {
+      console.log( err);
+    });
+};
+
+exports.deleteComment = (req, res) => {
+  const id = req.params.id;
+
+  comment.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Tutorial was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete comment with id=${id}.`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Tutorial with id=" + id
+      });
+    });
+};
+
+exports.deleteAll = (req, res) => {
+  cards.destroy({
+    where: {},
+    truncate: false
+  })
+    .then(cards => {
+      res.send({ message: `${cards}  were deleted successfully!` });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while removing all tutorials."
+      });
+    });
+};
+
+}
