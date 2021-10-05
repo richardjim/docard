@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-module.exports = new Sequelize('docard','postgres',  '07063137607',{
+module.exports = new Sequelize('docard','postgres',  '',{
   host: "localhost",
   dialect: "postgres",
   
