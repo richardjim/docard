@@ -1,7 +1,7 @@
 
 const db = require("../model");
-const cards = db.cards;
-const Comment = db.comment;
+const Card = db.cards;
+const Comment = db.comments;
 
 // router.get('/', (req, res) =>
 //   Gig.findAll()
@@ -12,23 +12,23 @@ const Comment = db.comment;
 //     .catch((err) => console.log(err))
 // );
 
-exports.create = (req,res) =>{
-  if(!req.body.title) {
-    res.status(400).send({
-      message:"content can not be empty"
-    });
-    return;
-  };
+// exports.create = (req,res) =>{
+//   if(!req.body.title) {
+//     res.status(400).send({
+//       message:"content can not be empty"
+//     });
+//     return;
+//   };
 
 
 // Create and Save new cards
-exports.createCards = (cards) => {
-  return Cards.create({
-    title: cards.title
+exports.createCards = (card) => {
+  return Card.create({
+    title: card.title
   })
-    .then((cards) => {
-      console.log(">> Created cards: " + JSON.stringify(cards, null, 4));
-      return cards;
+    .then((card) => {
+      console.log(">> Created card: " + JSON.stringify(card, null, 4));
+      return card;
     })
     .catch((err) => {
       console.log(">> Error while creating cards: ", err);
@@ -36,10 +36,10 @@ exports.createCards = (cards) => {
 };
 
 // Create and Save new Comments
-exports.createComment = (cardsId, comment) => {
+exports.createComment = (cardId, comment) => {
   return Comment.create({
     text: comment.text,
-    cardsId: cardsId
+    cardsId: cardId
   })
     .then((comment) => {
       console.log(">> Created comment: " + JSON.stringify(comment, null, 4));
@@ -86,13 +86,13 @@ exports.findAll = () => {
 
  
 
-exports.deleteComment = (cards) => {
-  return Cards.delete({
-    title: cards.title
+exports.deleteCards = (card) => {
+  return Card.delete({
+    title: card.title
   })
-    .then((cards) => {
-      console.log(">> delete card: " + JSON.stringify(cards, null, 4));
-      return cards;
+    .then((card) => {
+      console.log(">> delete card: " + JSON.stringify(card, null, 4));
+      return card;
     })
     .catch((err) => {
       console.log( err);
@@ -118,7 +118,7 @@ exports.deleteComment = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Tutorial with id=" + id
+        message: "Could not delete comment with id=" + id
       });
     });
 };
@@ -134,9 +134,8 @@ exports.deleteAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all tutorials."
+          err.message || "Some error occurred while removing all "
       });
     });
 };
 
-}

@@ -1,7 +1,7 @@
 
 
 module.exports = (sequelize, DataTypes) => {
-    const cards = sequelize.define("cards", {
+    const Card = sequelize.define("card", {
       id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -13,6 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   
-    return cards;
+    return Card;
   };
   
