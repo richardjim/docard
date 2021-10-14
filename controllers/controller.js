@@ -36,10 +36,10 @@ exports.createCards = (card) => {
 };
 
 // Create and Save new Comments
-exports.createComment = (cardId, comment) => {
+exports.createComment = (cardsId, comment) => {
   return Comment.create({
     text: comment.text,
-    cardsId: cardId
+    cardId: cardsId
   })
     .then((comment) => {
       console.log(">> Created comment: " + JSON.stringify(comment, null, 4));
@@ -49,21 +49,20 @@ exports.createComment = (cardId, comment) => {
       console.log(">> Error while creating comment: ", err);
     });
 };
-
 // Get the comments for a given 
-exports.findCardsById = (cards) => {
-  return cards.findByPk(cardsId, { include: ["comments"] })
-    .then((cards) => {
-      return cards;
+exports.findCardById = (cardId) => {
+  return Card.findByPk(cardId, { include: ["comments"] })
+.then((card) => {
+      return card;
     })
     .catch((err) => {
       console.log(">> Error while finding card: ", err);
     });
 };
 
-// Get the comments for a given comment id
-exports.findCommentById = (id) => {
-  return Comment.findByPk(id, { include: ["card"] })
+    // Get the comments for a given comment id
+exports.findCommentById = (Id) => {
+  return Comment.findByPk(Id, { include: ["card"] })
     .then((comment) => {
       return comment;
     })
@@ -72,61 +71,24 @@ exports.findCommentById = (id) => {
     });
 };
 
-// Get all cards include comments
-exports.findAll = () => {
-  return cards.findAll({
-    include: ["comment"],
-  }).then((cards) => {
-    return cards; 
-  })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+// exports.deleteAll = () => {
+//   Card.beforeDestroy(async card => {
+//     await Comment.destroy({ where: { cardId: card.id },truncate:false})
+//   })
+//     .then(cards => {
+//       res.send({ message: `${cards}  were deleted successfully!` });
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while removing all "
+//       });
+//     });
+// };
 
- 
-
-exports.deleteCards = (card) => {
-  return Card.delete({
-    title: card.title
-  })
-    .then((card) => {
-      console.log(">> delete card: " + JSON.stringify(card, null, 4));
-      return card;
-    })
-    .catch((err) => {
-      console.log( err);
-    });
-};
-
-exports.deleteComment = (req, res) => {
-  const id = req.params.id;
-
-  comment.destroy({
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Tutorial was deleted successfully!"
-        });
-      } else {
-        res.send({
-          message: `Cannot delete comment with id=${id}.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete comment with id=" + id
-      });
-    });
-};
-
-exports.deleteAll = (req, res) => {
-  cards.destroy({
-    where: {},
-    truncate: false
+exports.deleteCard = () => {
+  Card.beforeDestroy(async card => {
+    await Comment.destroy({ where: { cardId: card.id },truncate:false})
   })
     .then(cards => {
       res.send({ message: `${cards}  were deleted successfully!` });
@@ -136,6 +98,35 @@ exports.deleteAll = (req, res) => {
         message:
           err.message || "Some error occurred while removing all "
       });
+    });
+};
+
+
+
+exports.deleteAll = () => {
+  Card.beforeDestroy(async comment => {
+    await Comment.destroy({ where: {comment},truncate:false})
+  })
+    .then(cards => {
+      res.send({ message: `${cards}  were deleted successfully!` });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while removing all "
+      });
+    });
+};
+
+// Get all cards include comments
+exports.findAll = () => {
+  return Card.findAll({
+    include: ["comment"],
+  }).then((cards) => {
+    return cards; 
+  })
+    .catch((err) => {
+      console.log(err);
     });
 };
 

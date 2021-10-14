@@ -2,17 +2,17 @@
 const Controller = require ('./controllers/controller');
 const express = require('express');
 
-const router = express();
 
 
+const router = require("express").Router();
 
-router.post('AddCards/', Controller.createCards);
-router.post('AddComment/', Controller.createComment);
-router.get('/:id', Controller.findCardsById);
+router.post('/create', Controller.createCards);
+router.post('/comment/create', Controller.createComment);
+router.get('/:id', Controller.findCardById);
 router.get('/:id',Controller.findCommentById);
-router.delete('deleteComment/:id', Controller.deleteComment);
-router.delete('delete/:id', Controller.deleteCards);
+// router.delete('deleteComment/:id', Controller.deleteComment);
+router.delete('/:id', Controller.deleteAll);
 
-
+app.use('/', router);
 
 module.exports = router;
